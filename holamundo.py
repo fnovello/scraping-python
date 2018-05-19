@@ -4,12 +4,40 @@ from bs4 import BeautifulSoup
 
 # page = requests.get("http://dataquestio.github.io/web-scraping-pages/simple.html")
 url = "https://www.booking.com/reviews/ar/hotel/mint-hostel.en-gb.html?aid=304142;label=gen173nr-1DCAsoDEILbWludC1ob3N0ZWxICVgEaAyIAQGYAS7CAQp3aW5kb3dzIDEwyAEM2AED6AEB-AEEkgIBeagCAw;sid=85143f177573d2d6aeab4c777b49814c";
+# url = "https://www.infobae.com";
 page = requests.get(url)
 soup = BeautifulSoup(page.content, 'html.parser')
 # parsed_html = BeautifulSoup(page, "lxml")
-encode = soup
-# p.encode('UTF-8')
-print(encode)
+encode = soup.encode('UTF-8')
+# last = soup.find("div")
+# last = soup.find(class_='review_item_review_container lang_ltr');
+# print(last.encode('UTF-8'))
+
+# items_reviews = soup.find_all(class_='review_item_review_container lang_ltr');
+items_reviews = soup.find_all(class_='review_item clearfix ');
+for item in items_reviews:
+	review_item_reviewer = item.find(class_='review_item_reviewer')
+	t = review_item_reviewer.find('span', attrs={'itemprop':'nationality'})
+	# print(review_item_reviewer.encode('UTF-8'))
+	print(t.text.encode('UTF-8')) #pais
+	# print(item.encode('UTF-8'))
+
+
+
+# print(last)
+# last = encode.find(class_='review_list')
+
+# print(last)
+
+# a = last.find_all('a')
+
+
+# for b in a:
+#      names = b.contents[0]
+#      print(names)
+
+
+#     print(names)
 # encode = parsed_html.encode('UTF-8')
 
 
