@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 from bs4 import BeautifulSoup
 
 
@@ -11,15 +12,18 @@ from bs4 import BeautifulSoup
 # https://www.booking.com/reviews/es/hotel/homesuitehome-cordoba.es.html?aid=304142&label=gen173nr-1FCAEoggJCAlhYSDNYBGgMiAEBmAEKwgEKd2luZG93cyAxMMgBDNgBAegBAfgBC5ICAXmoAgM&sid=73ce31bc9e08add33bf198d47a357dc3&r_lang=de&customer_type=total&order=completed_asc
 # url2 = "https://www.booking.com/reviews/es/hotel/conquistador.es.html?aid=304142";
 # url = "https://www.infobae.com";
-payload = {'aid': '304142','label': 
+payload = {
+		   'aid': '304142','label': 
 		   'gen173nr-1FCAEoggJCAlhYSDNYBGgMiAEBmAEKwgEKd2luZG93cyAxMMgBDNgBAegBAfgBC5ICAXmoAgM', 
 		   'sid': '73ce31bc9e08add33bf198d47a357dc3',
-		    'r_lang':'de','customer_type':'total',
-		    'order':'completed_asc'}
+		   'r_lang':'de','customer_type':'total',
+		   'page': '5',
+		   'rows':'75',
+		   'order':'completed_asc'
+		   }
 header = {'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'}
 page = requests.get('https://www.booking.com/reviews/es/hotel/conquistador.es.html', params=payload, headers=header)
-print(page.url)
-
+# sys.exit(page.url)
 soup = BeautifulSoup(page.content, 'html.parser')
 
 # # parsed_html = BeautifulSoup(page, "lxml")
@@ -33,9 +37,15 @@ soup = BeautifulSoup(page.content, 'html.parser')
 bd='https://testvuejs-44f38.firebaseio.com/score.json'
 list_datos = list()
 indice = 0
+# archived_separator = soup.find_all(class_='archived_separator');
+# sys.exit(archived_separator)
 items_reviews = soup.find_all(class_='review_item clearfix ');
+# items_reviews_archived = soup.find_all(class_='review_item clearfix archive_item ');
+# sys.exit(items_reviews_archived)
 print(len(items_reviews))
-for item in items_reviews:
+# print(len(items_reviews_archived))
+# for item in items_reviews:
+# for item in items_reviews_archived:
 	# print(item.encode('UTF-8'))
 	# break
 	indice= indice + 1
@@ -45,6 +55,7 @@ for item in items_reviews:
 	puntaje = item.find('span', attrs={'class':'review-score-badge'})
 	date_write = item.find('meta', attrs={'itemprop':'datePublished'}).get('content')
 	date_persist = item.find('p', attrs={'class':'review_staydate'}).text
+	# date_persist = '' 
 	contenedor_pais = review_item_reviewer.find('span', attrs={'itemprop':'nationality'})
 	pais = contenedor_pais.find('span', attrs={'itemprop':'name'})
 	# print(pais.text)
@@ -63,6 +74,7 @@ for item in items_reviews:
 	
 	list_datos.append(dato)
 	if indice == len(items_reviews):
+	# if indice == len(items_reviews_archived):
 		headers = {
 	    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
 	    'Accept': 'application/json, text/javascript, */*; q=0.01',
