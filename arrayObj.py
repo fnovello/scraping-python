@@ -1,4 +1,9 @@
-my_list = list()
-my_dict = {'key':'value', 'another_key' : 0}
-my_list.append(my_dict)
-print(my_list)
+ban = True
+i=0
+while(ban):
+	i+=1
+	print(i)
+	if i==10:
+		ban=False
+		pass
+print('fin')
