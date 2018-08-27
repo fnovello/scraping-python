@@ -44,7 +44,7 @@ items_reviews = soup.find_all(class_='review_item clearfix ');
 # sys.exit(items_reviews_archived)
 print(len(items_reviews))
 # print(len(items_reviews_archived))
-# for item in items_reviews:
+for item in items_reviews:
 # for item in items_reviews_archived:
 	# print(item.encode('UTF-8'))
 	# break

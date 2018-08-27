@@ -8,7 +8,7 @@ ban=True
 while(ban):
 
 	p_page+=1
-	print(p_page)
+	# print(p_page)
 	# aid=304142;
 	# label=gen173nr-1DCAsoDEILbWludC1ob3N0ZWxICVgEaAyIAQGYAS7CAQp3aW5kb3dzIDEwyAEM2AED6AEB-AEEkgIBeagCAw;
 	# sid=ee7daad16ec016539000c9f3ba857bb2;
@@ -19,28 +19,47 @@ while(ban):
 	# page=1;
 	# r_lang=all;
 	# rows=75&
-	
 	payload = {
-			   'aid': '304142',
-			   'label': 'label=gen173nr-1DCAsoDEILbWludC1ob3N0ZWxICVgEaAyIAQGYAS7CAQp3aW5kb3dzIDEwyAEM2AED6AEB-AEEkgIBeagCAw', 
-			   'sid': 'ee7daad16ec016539000c9f3ba857bb2',
-			   'r_lang':'all',
-			   'customer_type':'total',
-			   'page': p_page,
-			   'rows':'75',
-			   'order':'completed_asc'
-			   }
+	'aid':'304142',
+	'label':'gen173nr-1DCAEoggJCAlhYSDNYBGgMiAEBmAEuwgEKd2luZG93cyAxMMgBDNgBA-gBAZICAXmoAgM',
+	'sid':'ee7daad16ec016539000c9f3ba857bb2',
+	'customer_type':'total',
+	'hp_nav':'0',
+	'old_page':'0',
+	'order':'completed_asc',
+	'page':p_page,
+	'r_lang':'all',
+	'rows':'75'
+	}
+	
+	# payload = {
+	# 		   'aid': '304142',
+	# 		   'label': 'label=gen173nr-1DCAsoDEILbWludC1ob3N0ZWxICVgEaAyIAQGYAS7CAQp3aW5kb3dzIDEwyAEM2AED6AEB-AEEkgIBeagCAw', 
+	# 		   'sid': 'ee7daad16ec016539000c9f3ba857bb2',
+	# 		   'r_lang':'all',
+	# 		   'customer_type':'total',
+	# 		   'page': p_page,
+	# 		   'rows':'75',
+	# 		   'order':'completed_asc'
+	# 		   }
 	header = {'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'}
-	page = requests.get('https://www.booking.com/reviews/ar/hotel/mint-hostel.en-gb.html', params=payload, headers=header)
+	page = requests.get('https://www.booking.com/reviews/es/hotel/osuna.en-gb.html', params=payload, headers=header)
+	# page = requests.get('https://www.booking.com/reviews/ar/hotel/mint-hostel.en-gb.html', params=payload, headers=header)
 	# page = requests.get('https://www.booking.com/reviews/es/hotel/conquistador.es.html', params=payload, headers=header)
 	# sys.exit(page.url)
 	soup = BeautifulSoup(page.content, 'html.parser')
 
-	bd='https://testvuejs-44f38.firebaseio.com/scoreBooking.json'
+	bd='https://testvuejs-44f38.firebaseio.com/scoreHotelOsuna.json'
 	list_datos = list()
 	indice = 0
 
-	items_reviews = soup.find_all(class_='review_item clearfix ');
+	try:
+		items_reviews = soup.find_all(class_='review_item clearfix ');
+		pass
+	except Exception as e:
+		ban=False
+		sys.exit('error review_item clearfix')
+		raise
 	# sys.exit(items_reviews_archived)
 	print(len(items_reviews))
 	for item in items_reviews:
@@ -80,8 +99,8 @@ while(ban):
 			requests.post(bd, data=json.dumps(list_datos))
 			pass
 		
-if (p_page > 8):
-	ban = False
-	sys.exit('FIN')
+# if (p_page > 8):
+# 	ban = False
+# 	sys.exit('FIN')
 
 
